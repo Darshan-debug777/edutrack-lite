@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+**/target/
+**/node_modules/
+**/.venv/
+**/venv/
+*.db
+*.sqlite
+*.sqlite3
+*.class
+frontend/dist/

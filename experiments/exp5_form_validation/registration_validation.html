@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment 5 — Student Registration Form Validation</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f8fafc;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+    }
+    .form-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 460px;
+      width: 100%;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08);
+    }
+    h2 { margin-top: 0; color: #1e293b; font-size: 1.4rem; }
+    p { color: #64748b; font-size: 0.875rem; margin-bottom: 1.25rem; }
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.35rem; color: #334155; }
+    input {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    input:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.15); }
+    input.invalid { border-color: #ef4444; background: #fff5f5; }
+    input.valid { border-color: #10b981; }
+    .error-msg { color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem; min-height: 18px; }
+    .btn {
+      width: 100%;
+      background: #4f46e5;
+      color: #fff;
+      padding: 0.7rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    .btn:hover { background: #4338ca; }
+    .success-banner {
+      display: none;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-card">
+    <h2>Student Registration Validation</h2>
+    <p>Experiment 5: Validating required fields, email format, and 10-digit mobile number.</p>
+
+    <div id="successBanner" class="success-banner"></div>
+
+    <form id="regForm" novalidate>
+      <div class="form-group">
+        <label for="studentId">Student ID (Required) *</label>
+        <input type="text" id="studentId" placeholder="e.g. STU101">
+        <div id="studentIdErr" class="error-msg"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="fullName">Full Name (Required) *</label>
+        <input type="text" id="fullName" placeholder="e.g. John Doe">
+        <div id="fullNameErr" class="error-msg"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address (Format Check) *</label>
+        <input type="email" id="email" placeholder="e.g. john.doe@edutrack.edu">
+        <div id="emailErr" class="error-msg"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="mobile">Mobile Number (10 Digits) *</label>
+        <input type="tel" id="mobile" placeholder="e.g. 9876543210" maxlength="10">
+        <div id="mobileErr" class="error-msg"></div>
+      </div>
+
+      <button type="submit" class="btn">Validate & Submit</button>
+    </form>
+  </div>
+
+  <script src="validator.js"></script>
+</body>
+</html>
