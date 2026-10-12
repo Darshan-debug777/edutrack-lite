@@ -1,0 +1,21 @@
+# Environments & Secrets
+.env
+.env.*
+!.env.example
+.neon/
+
+# Dependencies & Build artifacts
+node_modules/
+dist/
+target/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.neon
+.neon/
+.agents
+.agents/
+skills-lock.json

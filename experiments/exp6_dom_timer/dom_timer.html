@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment 6 — DOM Manipulation & Study Timer</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f8fafc;
+      padding: 2rem 1rem;
+      color: #0f172a;
+    }
+    .container { max-width: 650px; margin: 0 auto; }
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06);
+    }
+    h2 { margin-top: 0; font-size: 1.25rem; }
+    .timer-display {
+      font-size: 3rem;
+      font-weight: 800;
+      text-align: center;
+      margin: 1rem 0;
+      font-variant-numeric: tabular-nums;
+      color: #4f46e5;
+    }
+    .btn-group { display: flex; gap: 0.5rem; justify-content: center; }
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-start { background: #10b981; color: white; }
+    .btn-stop { background: #ef4444; color: white; }
+    .btn-reset { background: #64748b; color: white; }
+    .btn-add { background: #4f46e5; color: white; }
+    ul { list-style: none; padding: 0; margin-top: 1rem; }
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      background: #f8fafc;
+      margin-bottom: 0.35rem;
+      border-radius: 6px;
+    }
+    .btn-del {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      border-radius: 4px;
+      padding: 2px 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header style="text-align: center; margin-bottom: 1.5rem;">
+      <h1>Experiment 6: DOM & Timer</h1>
+      <p>Demonstrating querySelector, style updates, dynamic element creation/removal & setInterval timer.</p>
+    </header>
+
+    <!-- 1. Stopwatch / Study Timer -->
+    <div class="card">
+      <h2>Interactive Study Session Timer (setInterval)</h2>
+      <div id="timerDisplay" class="timer-display">00:00:00</div>
+      <div class="btn-group">
+        <button id="startBtn" class="btn btn-start">▶ Start Timer</button>
+        <button id="stopBtn" class="btn btn-stop" disabled>⏸ Pause</button>
+        <button id="resetBtn" class="btn btn-reset">↻ Reset</button>
+      </div>
+    </div>
+
+    <!-- 2. Dynamic DOM List Elements Creation / Removal -->
+    <div class="card">
+      <h2>Dynamic Student Notice Board (Create & Remove Elements)</h2>
+      <div style="display: flex; gap: 0.5rem;">
+        <input type="text" id="noticeInput" placeholder="Enter new announcement..." style="flex: 1; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+        <button id="addNoticeBtn" class="btn btn-add">+ Post Notice</button>
+      </div>
+
+      <ul id="noticeList">
+        <li>
+          <span>Orientation session scheduled for Monday at 10 AM</span>
+          <button class="btn-del">Remove</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="dom_timer.js"></script>
+</body>
+</html>

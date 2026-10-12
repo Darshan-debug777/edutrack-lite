@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment 8 — Props, State, Reusable Components & Router</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f8fafc; padding: 2rem 1rem; color: #0f172a; }
+    .container { max-width: 680px; margin: 0 auto; }
+    .nav-bar { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; background: #fff; padding: 0.5rem; border-radius: 8px; border: 1px solid #e2e8f0; }
+    .nav-btn { padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; background: transparent; }
+    .nav-btn.active { background: #4f46e5; color: white; }
+    .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center; }
+    .btn { padding: 0.4rem 0.85rem; border-radius: 6px; font-weight: 600; border: none; cursor: pointer; }
+    .btn-enroll { background: #4f46e5; color: white; }
+    .btn-drop { background: #fee2e2; color: #991b1b; }
+    .badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: #e0e7ff; color: #3730a3; margin-right: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    // 1. REUSABLE COMPONENT: CourseCard receiving props
+    function CourseCard({ code, title, credits, instructor, isEnrolled, onToggleEnroll }) {
+      return (
+        <div className="card">
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.25rem' }}>
+              <span className="badge">{code}</span>
+              <strong style={{ fontSize: '1.05rem' }}>{title}</strong>
+            </div>
+            <div style={{ fontSize: '0.85rem', color: '#64748b' }}>
+              Credits: {credits} &bull; Instructor: {instructor}
+            </div>
+          </div>
+          <div>
+            <button
+              className={`btn ${isEnrolled ? 'btn-drop' : 'btn-enroll'}`}
+              onClick={() => onToggleEnroll(code)}
+            >
+              {isEnrolled ? 'Drop Course' : '+ Enroll'}
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // 2. MAIN APP: Demonstrating routing and state
+    function CoursePortalApp() {
+      const [currentRoute, setCurrentRoute] = useState('/catalog'); // simulated client-side routing
+      const [enrolledCodes, setEnrolledCodes] = useState(['CS201']); // State management
+
+      const catalog = [
+        { code: 'CS201', title: 'Data Structures & Algorithms', credits: 4, instructor: 'Dr. Turing' },
+        { code: 'CS202', title: 'Database Management Systems', credits: 4, instructor: 'Prof. Codd' },
+        { code: 'CS203', title: 'Object-Oriented Programming (Java)', credits: 3, instructor: 'Dr. Gosling' },
+        { code: 'CS204', title: 'Operating Systems', credits: 3, instructor: 'Prof. Tanenbaum' },
+      ];
+
+      const handleToggleEnroll = (code) => {
+        setEnrolledCodes((prev) =>
+          prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]
+        );
+      };
+
+      const enrolledCourses = catalog.filter((c) => enrolledCodes.includes(c.code));
+
+      return (
+        <div className="container">
+          <header style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+            <h2>Experiment 8: Props, State, Components & Router</h2>
+            <p style={{ color: '#64748b', fontSize: '0.9rem' }}>
+              Reusable <code>CourseCard</code> component communicating via Props and managing state across routes.
+            </p>
+          </header>
+
+          {/* Navigation Bar (Simulating React Router Links) */}
+          <div className="nav-bar">
+            <button
+              className={`nav-btn ${currentRoute === '/catalog' ? 'active' : ''}`}
+              onClick={() => setCurrentRoute('/catalog')}
+            >
+              Course Catalog ({catalog.length})
+            </button>
+            <button
+              className={`nav-btn ${currentRoute === '/my-courses' ? 'active' : ''}`}
+              onClick={() => setCurrentRoute('/my-courses')}
+            >
+              My Enrolled Courses ({enrolledCodes.length})
+            </button>
+          </div>
+
+          {/* ROUTE 1: Catalog */}
+          {currentRoute === '/catalog' && (
+            <div>
+              <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>Available University Courses</h3>
+              {catalog.map((c) => (
+                <CourseCard
+                  key={c.code}
+                  code={c.code}
+                  title={c.title}
+                  credits={c.credits}
+                  instructor={c.instructor}
+                  isEnrolled={enrolledCodes.includes(c.code)}
+                  onToggleEnroll={handleToggleEnroll}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* ROUTE 2: My Enrolled Courses */}
+          {currentRoute === '/my-courses' && (
+            <div>
+              <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>My Enrolled Course Schedule</h3>
+              {enrolledCourses.length === 0 ? (
+                <p style={{ color: '#64748b' }}>No courses enrolled yet. Please visit the catalog.</p>
+              ) : (
+                enrolledCourses.map((c) => (
+                  <CourseCard
+                    key={c.code}
+                    code={c.code}
+                    title={c.title}
+                    credits={c.credits}
+                    instructor={c.instructor}
+                    isEnrolled={true}
+                    onToggleEnroll={handleToggleEnroll}
+                  />
+                ))
+              )}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<CoursePortalApp />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Template Configuration File for EduTrack Lite
+# Copy this file to application.properties and customize your local MySQL credentials
+
+server.port=8080
+
+# Replace with your MySQL host, port, and database name
+spring.datasource.url=jdbc:mysql://localhost:3306/edutrack?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=YOUR_MYSQL_PASSWORD_HERE
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# Automatically initialize tables on start
+spring.sql.init.mode=always
+spring.sql.init.schema-locations=classpath:schema.sql
+spring.sql.init.data-locations=classpath:data.sql
+spring.sql.init.continue-on-error=true

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment 7 — React useState & useEffect</title>
+  <!-- React 18 & Babel CDN for zero-dependency standalone execution -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f8fafc; padding: 2rem 1rem; color: #0f172a; }
+    .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; max-width: 580px; margin: 0 auto 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06); }
+    .btn { padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; border: none; cursor: pointer; margin-right: 0.5rem; }
+    .btn-primary { background: #4f46e5; color: white; }
+    .btn-secondary { background: #e2e8f0; color: #1e293b; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: #e0e7ff; color: #3730a3; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function StudentAttendanceCounter() {
+      // 1. useState demonstration
+      const [attended, setAttended] = useState(32);
+      const [total, setTotal] = useState(40);
+      const [autoRefresher, setAutoRefresher] = useState(0);
+
+      // 2. useEffect demonstration: runs on mount and every 5 seconds
+      useEffect(() => {
+        console.log("useEffect: Setting up polling/clock interval");
+        const interval = setInterval(() => {
+          setAutoRefresher((prev) => prev + 1);
+        }, 3000);
+
+        // Cleanup on unmount
+        return () => {
+          console.log("useEffect cleanup: Clearing interval");
+          clearInterval(interval);
+        };
+      }, []);
+
+      // Calculate percentage automatically
+      const percentage = total > 0 ? ((attended / total) * 100).toFixed(1) : 0;
+
+      return (
+        <div className="card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Experiment 7: React State & Effects</h2>
+            <span className="badge">Auto-ticks: {autoRefresher}</span>
+          </div>
+
+          <p style={{ color: '#64748b', fontSize: '0.9rem' }}>
+            Demonstrates React <code>useState</code> for interactive state management and <code>useEffect</code> for lifecycle mounting and interval timers.
+          </p>
+
+          <div style={{ background: '#f1f5f9', padding: '1rem', borderRadius: '8px', margin: '1rem 0' }}>
+            <div style={{ fontSize: '1.75rem', fontWeight: 800, color: percentage >= 75 ? '#10b981' : '#ef4444' }}>
+              Attendance: {percentage}%
+            </div>
+            <div style={{ fontSize: '0.875rem', color: '#475569' }}>
+              Classes Attended: <strong>{attended}</strong> / Total: <strong>{total}</strong>
+            </div>
+          </div>
+
+          <div>
+            <button
+              className="btn btn-primary"
+              onClick={() => setAttended((prev) => Math.min(prev + 1, total))}
+            >
+              + Attended Class
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => setTotal((prev) => prev + 1)}
+            >
+              + Total Class Conducted
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => { setAttended(0); setTotal(0); }}
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<StudentAttendanceCounter />);
+  </script>
+</body>
+</html>
